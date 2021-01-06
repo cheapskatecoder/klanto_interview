@@ -1,3 +1,9 @@
 from django.contrib import admin
+from portal.models import AccessToken
 
-# Register your models here.
+
+class AccessTokenModelAdmin(admin.ModelAdmin):
+    fields = ['access_token']
+
+
+admin.site.register(AccessToken, AccessTokenModelAdmin)

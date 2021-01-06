@@ -2,6 +2,7 @@ import os
 import pickle
 from django.conf import settings
 import plaid
+from portal.models import AccessToken
 
 def GET_PLAID_REDIRECT_URI():
     redirect_uri = os.environ.get('PLAID_REDIRECT_URI')
@@ -20,7 +21,7 @@ def GET_CLIENT():
 
 
 def GET_ACCESS_TOKEN():
-    return pickle.load(open('pickled_file.pkl', 'rb'))
+    return AccessToken.objects.last().access_token
 
 def format_error(e):
   return {'error': {'display_message': e.display_message, 'error_code': e.code, 'error_type': e.type, 'error_message': e.message } }

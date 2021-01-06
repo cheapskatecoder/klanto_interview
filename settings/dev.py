@@ -1,5 +1,4 @@
 from .base import *
-import django_heroku
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -17,5 +16,3 @@ DATABASES = {
         'PASSWORD': 'postgres'
     }
 }
-
-django_heroku.settings(locals())

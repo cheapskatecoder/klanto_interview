@@ -1,19 +1,21 @@
+# Native Imports
 import datetime
-import pickle
+
+# Framework Imports
 from django.shortcuts import render
 from rest_framework.views import APIView
 from django.http import JsonResponse
 from django.conf import settings
-from rest_framework.permissions import AllowAny
-import plaid
-from utils.utils import GET_PLAID_REDIRECT_URI, GET_CLIENT, format_error, GET_ACCESS_TOKEN
+from rest_framework.permissions import IsAuthenticated
 
-# We store the access_token in memory - in production, store it in a secure
-# persistent data store.
+# Third Party Imports
+import plaid
+
+# Custom Imports
+from utils.utils import GET_PLAID_REDIRECT_URI, GET_CLIENT, format_error, GET_ACCESS_TOKEN
+from portal.models import AccessToken
+
 access_token = None
-# The payment_id is only relevant for the UK Payment Initiation product.
-# We store the payment_id in memory - in production, store it in a secure
-# persistent data store.
 payment_id = None
 
 item_id = None
@@ -21,7 +23,7 @@ client = GET_CLIENT()
 
 
 class GetInfo(APIView):
-    permission_classes = [AllowAny, ]
+    permission_classes = [IsAuthenticated, ]
     def post(self, request):
         global access_token
         global item_id
@@ -34,7 +36,7 @@ class GetInfo(APIView):
 
 
 class CreateLinkToken(APIView):
-    permission_classes = [AllowAny, ]
+    permission_classes = [IsAuthenticated, ]
     def post(self, request):
         try:
             response = client.LinkToken.create(
@@ -55,7 +57,7 @@ class CreateLinkToken(APIView):
 
 
 class SetAccessToken(APIView):
-    permission_classes = [AllowAny, ]
+    permission_classes = [IsAuthenticated, ]
     def post(self, request):
         global access_token
         global item_id
@@ -67,13 +69,13 @@ class SetAccessToken(APIView):
             return JsonResponse(format_error(e))
         
         access_token = exchange_response.get('access_token')
-        pickle.dump(access_token, open('pickled_file.pkl', 'wb'))
+        AccessToken.objects.create(access_token=access_token)
         item_id = exchange_response.get('item_id')
         return JsonResponse(exchange_response)
 
 
 class GetAccounts(APIView):
-    permission_classes = [AllowAny, ]
+    permission_classes = [IsAuthenticated, ]
     def get(self, request):
         try:
             accounts_response = client.Accounts.get(access_token)
@@ -83,7 +85,7 @@ class GetAccounts(APIView):
 
 
 class Auth(APIView):
-    permission_classes = [AllowAny, ]
+    permission_classes = [IsAuthenticated, ]
     def get(self, request):
         try:
             auth_response = client.Auth.get(access_token)
@@ -93,7 +95,7 @@ class Auth(APIView):
 
 
 class Transactions(APIView):
-    permission_classes = [AllowAny, ]
+    permission_classes = [IsAuthenticated, ]
     def get(self, request):
         access_token = GET_ACCESS_TOKEN()
         print(access_token)
@@ -109,7 +111,7 @@ class Transactions(APIView):
 
 
 class GetBalance(APIView):
-    permission_classes = [AllowAny, ]
+    permission_classes = [IsAuthenticated, ]
 
     def get(self, request):
         access_token = GET_ACCESS_TOKEN()
@@ -121,7 +123,7 @@ class GetBalance(APIView):
 
 
 class GetInvestementTransaction(APIView):
-    permission_classes = [AllowAny, ]
+    permission_classes = [IsAuthenticated, ]
 
     def get(self, request):
         access_token = GET_ACCESS_TOKEN()
