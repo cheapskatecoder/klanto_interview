@@ -31,13 +31,13 @@ class Signin(View):
             user = authenticate(username=username, password=password)
             if user:
                 login(request, user)
-                return HttpResponseRedirect(reverse('dashboard'))
+                return HttpResponseRedirect(reverse('portal:dashboard'))
             else:
                 messages.error(request, 'Either Username or Password is incorrect', extra_tags='alert alert-danger')
-                return HttpResponseRedirect(reverse('signin'))
+                return HttpResponseRedirect(reverse('portal:signin'))
         else:
             messages.error(request, 'Username and Password both are required', extra_tags='alert alert-danger')
-            return HttpResponseRedirect(reverse('signin'))
+            return HttpResponseRedirect(reverse('portal:signin'))
 
 
 class Signup(View):
@@ -56,10 +56,10 @@ class Signup(View):
             user = User.objects.create(username=username, password=password, email=email)
             if user:
                 login(request, user)
-                return HttpResponseRedirect(reverse('dashboard'))
+                return HttpResponseRedirect(reverse('portal:dashboard'))
         else:
             message.error(request, 'All the fields are required', extra_tags='alert alert-danger')
-            return HttpResponseRedirect(reverse('signup'))
+            return HttpResponseRedirect(reverse('portal:signup'))
 
 
 class Portfolio(View):
