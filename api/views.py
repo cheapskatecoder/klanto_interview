@@ -50,7 +50,8 @@ class CreateLinkToken(APIView):
                     'products': settings.PLAID_PRODUCTS,
                     'country_codes': settings.PLAID_COUNTRY_CODES,
                     'language': 'en',
-                    'redirect_uri': GET_PLAID_REDIRECT_URI()
+                    'redirect_uri': GET_PLAID_REDIRECT_URI(),
+                    'webhook': 'https://klantointerview.herokuapp.com/api/v1/plaid-transactions-webhook',
                 }
             )
             return JsonResponse(response)
