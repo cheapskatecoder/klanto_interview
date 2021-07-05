@@ -12,7 +12,9 @@ urlpatterns = [
     path('auth', views.Auth.as_view(), name='auth'),
     path('transactions', views.Transactions.as_view(), name='transactions'),
     path('balance', views.GetBalance.as_view(), name='get-balance'),
-    path('investment-transactions', views.GetInvestementTransaction.as_view(), name='invtestment-transaction')
+    path('investment-transactions', views.GetInvestementTransaction.as_view(), name='invtestment-transaction'),
+    path('buy-item', views.BuyItem.as_view(), name='buy-item'),
+    path('plaid-transactions-webhook', views.PlaidTransactionWebhook.as_view(), name='plaid-transactions-webhook'),
 ]
 
 urlpatterns += router.urls

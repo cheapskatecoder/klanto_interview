@@ -10,10 +10,10 @@ ALLOWED_HOSTS = ["klantointerview.herokuapp.com"]
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-DATABASES = { 
+DATABASES = {
     'default': {
         'CONN_MAX_AGE': 500,
-    }   
+    }
 }
 
 DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)

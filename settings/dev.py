@@ -11,7 +11,7 @@ ALLOWED_HOSTS = ["*"]
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'klanto',
+        'NAME': 'plaid',
         'USER': 'postgres',
         'PASSWORD': 'postgres'
     }

@@ -5,7 +5,7 @@
   <div class="grid">
     <div class="grid__column grid__column--is-twelve-columns">
       <div id="banner" class="everpresent-content">
-        <h1 class="everpresent-content__heading">Klanto Interview</h1>
+        <h1 class="everpresent-content__heading">Plaid Checkbalance</h1>
       </div>
 
       <div id="container" class="initial-view">
@@ -23,6 +23,7 @@
         </button>
         <div class="loading-indicator"></div>
       </div>
+
 
       <div id="app" class="connected-view">
         <div class="item-overview">
@@ -44,10 +45,37 @@
           API requests:
         </p>
 
+      <br />
+      <br />
+      <br />
+      <br />
+      <div class="card mb-3">
+        <img class="card-img-top" src="https://assets.system76.com/products/launch_1/overhead.png?fit=cover&format=webp&width=800" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">System76 Launch Keyboard</h5>
+          <p class="card-text">Customizable Keyboard</p>
+          <select id="system76" class="form-control">
+            <option value="checking">Checking</option>
+            <option value="savings">Savings</option>
+          </select>
+          <h3><button class="w-100 btn btn-primary" onclick="buyItem(200, 'system76')">Buy $ 200</button></h3>
+        </div>
+      </div>
+      <div class="card mb-3">
+        <img class="card-img-top" src="https://images.indianexpress.com/2020/09/PS5.jpg" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">System76 Launch Keyboard</h5>
+          <p class="card-text">Customizable Keyboard</p>
+          <select id="ps5" class="form-control">
+            <option value="checking">Checking</option>
+            <option value="savings">Savings</option>
+          </select>
+          <h3><button class="w-100 btn btn-primary" onclick="buyItem(500, 'ps5')">Buy $ 500</button></h3>
+        </div>
+      </div>
         <div class="box">
           <h3 class="box__heading">Products</h3>
 
-          <!-- Auth -->
           <div class="item-data-row">
             <div class="item-data-row__left">
               <div class="item-data-row__request-type">post</div>
@@ -78,7 +106,6 @@
             </div>
           </div>
 
-          <!--Transactions -->
           <div class="item-data-row">
             <div class="item-data-row__left">
               <div class="item-data-row__request-type">post</div>
@@ -108,7 +135,6 @@
             </div>
           </div>
 
-          <!-- Balance -->
           <div class="item-data-row">
             <div class="item-data-row__left">
               <div class="item-data-row__request-type">post</div>
@@ -139,7 +165,6 @@
             </div>
           </div>
 
-          <!-- Assets (hidden unless 'assets' is included in the product list) -->
           <div id="assets" class="item-data-row" style="display: none">
             <div class="item-data-row__left">
               <div class="item-data-row__request-type">post</div>
@@ -176,7 +201,6 @@
             </div>
           </div>
 
-          <!-- UK Payment Initiation (hidden unless 'payment_initiation' is included in the product list) -->
           <div class="payment_initiation item-data-row" style="display: none">
             <div class="item-data-row__left">
               <div class="item-data-row__request-type">post</div>
@@ -208,6 +232,7 @@
             </div>
           </div>
         </div>
+
       </div>
     </div>
   </div>
@@ -224,6 +249,7 @@
       page_info.item_id != null &&
       page_info.item_id.length > 0
     ) {
+      console.log('render pagedocument is not null, doesnt include oauth response pageinfo item id is nul and the length of page into item id is < 0');
       $("#container").fadeOut("fast", function () {
         $("#item_id").text(page_info.item_id);
         $("#access_token").text(page_info.access_token);
@@ -275,6 +301,7 @@
         $(".loading-indicator").hide();
       });
     } else {
+      console.log('are you even surprised?');
       var handler = null;
       $.ajax({
         url: "/api/v1/create-link-token",
@@ -319,13 +346,16 @@
     }
 
     var accessToken = qs("access_token");
+    console.log('access token', accessToken);
     if (accessToken != null && accessToken !== "") {
+      console.log('no idea bruv');
       $.post(
         "/api/v1/set-access-token",
         {
           access_token: accessToken,
         },
         function (data) {
+          console.log('set access token', data);
           $("#container").fadeOut("fast", function () {
             $("#item_id").text(data.item_id);
             $("#access_token").text(accessToken);
@@ -832,6 +862,7 @@
     headers: { "X-CSRFToken": getCookie("csrftoken") },
     success: function (res) {
       console.log("success");
+      console.log(res);
       render_page(jQuery, res);
     },
     error: function (error) {
@@ -860,6 +891,25 @@
       <div>Check out our <a href="https://plaid.com/docs/#errors-overview">errors documentation</a> for more information.</div>
     </div>`;
     $(element).html(html).slideDown();
+  }
+
+  const buyItem = (price, type) => {
+    var subtype = document.getElementById(type).value;
+    
+    $.ajax({
+      url: '/api/v1/buy-item',
+      method: 'post',
+      data: {'price': price, 'subtype': subtype},
+      headers: {'X-CSRFToken': getCookie('csrftoken')},
+      success: (data) => {
+        console.log(data);
+        console.log(data.success);
+        alert(data.success);
+      },
+      error: (err) => {
+        alert('something went wrong, please check the networks tab and the console for errors')
+      }
+    })
   }
 </script>
 {% endblock %}
