@@ -171,6 +171,6 @@ class PlaidTransactionWebhook(APIView):
     def post(self, request):
         logger.info('\n\n\n\n{}\n\n\n\n'.format(request.data))
         print('\n\n\n\n{}\n\n\n\n'.format(request.data))
-        # PlaidWebhooksData.objects.create(json_dump=)
+        PlaidWebhooksData.objects.create(json_dump=request.data)
         return JsonResponse({'success': 'success'})
 

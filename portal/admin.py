@@ -1,5 +1,5 @@
 from django.contrib import admin
-from portal.models import AccessToken
+from portal.models import AccessToken, PlaidWebhooksData
 
 
 class AccessTokenModelAdmin(admin.ModelAdmin):
@@ -7,3 +7,4 @@ class AccessTokenModelAdmin(admin.ModelAdmin):
 
 
 admin.site.register(AccessToken, AccessTokenModelAdmin)
+admin.site.register(PlaidWebhooksData)
