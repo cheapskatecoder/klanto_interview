@@ -67,3 +67,11 @@ class Portfolio(View):
 
     def get(self, request):
         return render(request, self.template_name, context={'file': 'https://drive.google.com/file/d/1oGhhJUDozo4fbtmg9W4nnad2jJ5yX5Je/view?usp=sharing'})
+
+
+class RailzRedirect(View):
+    template_name = 'portal/railz_redirect.html'
+
+    def get(self, request):
+        return render(request, self.template_name)
+
